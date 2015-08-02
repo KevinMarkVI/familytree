@@ -59,4 +59,30 @@ Tree.prototype.contains = function(value){
     return false;
 };
 
-module.exports = Tree;
+//Finds and returns a node in tree 
+Tree.prototype.findNode = function(value) {
+  if (this.value === value) {
+    return this;
+  }
+  for (var j = 0; j < this.children.length; j++) {
+    var node = this.children[j].findNode(value);
+    if (node) {
+      return node;
+    }
+  }
+};
+
+//Calls an iterator on each node in the tree
+Tree.prototype.forEach = function(callback) {
+  var nodeArr = [this];
+  while (nodeArr.length) {
+    var node = nodeArr.pop();
+    callback(node);
+    for (var i = 0; i < node.children.length; i++) {
+      nodeArr.push(node.children[i]);
+    }
+  }
+};
+
+
+

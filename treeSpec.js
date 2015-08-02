@@ -1,8 +1,10 @@
 describe('Tree', function() {
   var tree;
+  var count;
 
   beforeEach(function() {
     tree = new Tree(20);
+    count = 0;
   });
 
   it('should have methods named "addChild" and "contains", and properties named "value" and "parent"', function() {
@@ -69,6 +71,28 @@ describe('Tree', function() {
     expect(tree.contains(7)).to.equal(true);
     expect(tree.contains(8)).to.equal(true);
   });
+
+  it('should find and return a node given its value', function(){
+    tree.addChild(5);
+    tree.addChild(6);
+    tree.children[0].addChild(7);
+    tree.children[1].addChild(8);
+    expect(tree.findNode(7).parent.value).to.equal(5);
+  });
+
+  it('should call the iterator on each node in the tree', function(){
+    var countNodes = function(node) {
+      count++;
+    };
+    tree.addChild(5);
+    tree.addChild(6);
+    tree.children[0].addChild(7);
+    tree.children[1].addChild(8);
+    tree.forEach(countNodes);
+    expect(count).to.equal(5);
+  });
+
+
 
 });
 
