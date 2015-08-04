@@ -8,7 +8,6 @@ var FamilyTree = function(name) {
 FamilyTree.prototype.findGrandParent = function(name) {
   var grandParentNode;
   var targetNode = this.tree.findNode(name);
-
   if (targetNode.parent !== null && targetNode.parent.parent !== null) {
     grandParentNode = targetNode.parent.parent;
   } 

@@ -49,15 +49,11 @@ Tree.prototype.childIndex = function(value) {
 
 //Returns true if the node is contained within the tree
 Tree.prototype.contains = function(value){
-  if (this.value === value) {
+  if (this.findNode(value)) {
     return true;
-  }
-  for (var j = 0; j < this.children.length; j++) {
-    if (this.children[j].contains(value)){
-      return true;
-    }
-  }
+  } else {
     return false;
+  }
 };
 
 //Finds and returns a node in tree 
@@ -73,11 +69,11 @@ Tree.prototype.findNode = function(value) {
 };
 
 //Calls an iterator on each node in the tree
-Tree.prototype.forEach = function(callback) {
+Tree.prototype.forEach = function(iterator) {
   var nodeArr = [this];
   while (nodeArr.length) {
     var node = nodeArr.pop();
-    callback(node);
+    iterator(node);
     for (var i = 0; i < node.children.length; i++) {
       nodeArr.push(node.children[i]);
     }
@@ -90,7 +86,6 @@ Tree.prototype.findRoot = function() {
   while (currentNode.parent) {
     currentNode = currentNode.parent;
   }
-
   return currentNode;
 };
 
