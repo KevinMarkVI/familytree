@@ -7,9 +7,14 @@ describe('Tree', function() {
     count = 0;
   });
 
-  it('should have methods named "addChild" and "contains", and properties named "value" and "parent"', function() {
+  it('should have methods named "addChild", "contains", "removeChild", "childIndex", "findRoot", "findNode", and "forEach" and properties named "value" and "parent"', function() {
     expect(tree.addChild).to.be.a("function");
     expect(tree.contains).to.be.a("function");
+    expect(tree.removeChild).to.be.a("function");
+    expect(tree.childIndex).to.be.a("function");
+    expect(tree.findRoot).to.be.a("function");
+    expect(tree.findNode).to.be.a("function");
+    expect(tree.forEach).to.be.a("function");
     expect(tree.hasOwnProperty("value")).to.equal(true);
     expect(tree.hasOwnProperty("parent")).to.equal(true);
   });
@@ -22,6 +27,7 @@ describe('Tree', function() {
  it('should not add children with duplicate values', function(){
     tree.addChild(5);
     expect(function () {tree.addChild(5);}).to.throw("This child already exists!");
+    expect(function () {tree.children[0].addChild(20);}).to.throw("This child already exists!");
   });
 
  it('should designate the parent node', function(){
@@ -90,6 +96,14 @@ describe('Tree', function() {
     tree.children[1].addChild(8);
     tree.forEach(countNodes);
     expect(count).to.equal(5);
+  });
+
+  it('should return the root node given any value', function(){
+    tree.addChild(5);
+    tree.addChild(6);
+    tree.children[0].addChild(7);
+    tree.children[1].addChild(8);
+    expect(tree.findRoot(7).value).to.equal(20);
   });
 
 

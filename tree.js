@@ -10,7 +10,8 @@ var Tree = function(value){
 //Creates a child and adds it to the parent node
 Tree.prototype.addChild = function(value){
   var child;
-  if (this.contains(value)) {
+  var treeRoot = this.findRoot(); 
+  if (treeRoot.contains(value)) {
     throw new Error("This child already exists!");
   } else {
     child = new Tree(value);
@@ -61,15 +62,14 @@ Tree.prototype.contains = function(value){
 
 //Finds and returns a node in tree 
 Tree.prototype.findNode = function(value) {
-  if (this.value === value) {
-    return this;
-  }
-  for (var j = 0; j < this.children.length; j++) {
-    var node = this.children[j].findNode(value);
-    if (node) {
-      return node;
+  var result;
+  var nodeFinder = function(node) {
+    if (node.value === value) {
+      result = node;
     }
-  }
+  };
+  this.forEach(nodeFinder);
+  return result;
 };
 
 //Calls an iterator on each node in the tree
@@ -82,6 +82,16 @@ Tree.prototype.forEach = function(callback) {
       nodeArr.push(node.children[i]);
     }
   }
+};
+
+//Returns the root node of the tree given any value
+Tree.prototype.findRoot = function() {
+  var currentNode = this;
+  while (currentNode.parent) {
+    currentNode = currentNode.parent;
+  }
+
+  return currentNode;
 };
 
 

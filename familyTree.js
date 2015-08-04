@@ -6,8 +6,12 @@ var FamilyTree = function(name) {
 
 //Given a name, this function returns the grand parent node
 FamilyTree.prototype.findGrandParent = function(name) {
+  var grandParentNode;
   var targetNode = this.tree.findNode(name);
-  var grandParentNode = targetNode.parent.parent;
+
+  if (targetNode.parent !== null && targetNode.parent.parent !== null) {
+    grandParentNode = targetNode.parent.parent;
+  } 
   return grandParentNode;
 };
 
@@ -35,21 +39,21 @@ FamilyTree.prototype.noChildren = function() {
   return results;
 };
 
-//Returns the name of the node with the most grand children
+//Returns an object returning the number of grand children for any node that has grand children
 FamilyTree.prototype.grandChildrenCount = function() {
   var grandChildrenCount = {};
 
   var findGrandChildren = function(node) {
-    if (node.parent !== null && node.parent.parent !== null) {
-      if (grandChildrenCount[node.parent.parent.value]) {
-        grandChildrenCount[node.parent.parent.value] += 1;
+    var grandParent = this.findGrandParent(node.value);
+    if (grandParent) {
+      if (grandChildrenCount[grandParent.value]) {
+        grandChildrenCount[grandParent.value] += 1;
       } else {
-        grandChildrenCount[node.parent.parent.value] = 1;
+        grandChildrenCount[grandParent.value] = 1;
       }
     }
   };
-
-  this.tree.forEach(findGrandChildren);
+  this.tree.forEach(findGrandChildren.bind(this));
   return grandChildrenCount;
 };
 
